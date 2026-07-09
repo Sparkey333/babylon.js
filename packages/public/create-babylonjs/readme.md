@@ -13,6 +13,7 @@ The CLI walks you through a few choices and generates a ready-to-run project:
 | Prompt            | Options                                                                                            |
 | ----------------- | -------------------------------------------------------------------------------------------------- |
 | **Project name**  | Any name (defaults to `my-babylonjs-app`)                                                          |
+| **Template**      | **Viewer/Scene** (glTF showcase) or **Commercial Game** (arcade score-loop prototype)              |
 | **Module format** | **ES6** (`@babylonjs/core` — tree-shakeable) or **UMD** (`babylonjs` — global `BABYLON` namespace) |
 | **Language**      | **TypeScript** or **JavaScript**                                                                   |
 | **Bundler**       | **Vite**, **Webpack**, **Rollup**, or **None** (CDN script tags only — UMD only)                   |
@@ -22,6 +23,7 @@ The CLI walks you through a few choices and generates a ready-to-run project:
 Every project includes:
 
 - A starter scene that loads a glTF model with environment lighting
+- **Commercial Game template:** aerial arcade prototype with score HUD, glow VFX, and keyboard controls
 - Demonstrates `SceneLoader.AppendAsync`, `createDefaultCamera`, and `createDefaultEnvironment`
 - Proper side-effect imports for tree-shaken ES6 builds (glTF loader, env texture loader, PBR material, etc.)
 - Resize handling and render loop
