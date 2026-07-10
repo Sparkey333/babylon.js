@@ -1,7 +1,7 @@
 import type { ProjectOptions } from "../index";
 
 export function generatePackageJson(options: ProjectOptions): string {
-    const { projectName, moduleFormat, language, bundler } = options;
+    const { projectName, moduleFormat, language, bundler, projectTemplate } = options;
 
     const deps: Record<string, string> = {};
     const devDeps: Record<string, string> = {};
@@ -11,9 +11,15 @@ export function generatePackageJson(options: ProjectOptions): string {
     if (moduleFormat === "es6") {
         deps["@babylonjs/core"] = "^9.0.0";
         deps["@babylonjs/loaders"] = "^9.0.0";
+        if (projectTemplate === "game") {
+            deps["@babylonjs/gui"] = "^9.0.0";
+        }
     } else {
         deps["babylonjs"] = "^9.0.0";
         deps["babylonjs-loaders"] = "^9.0.0";
+        if (projectTemplate === "game") {
+            deps["babylonjs-gui"] = "^9.0.0";
+        }
     }
 
     // TypeScript
