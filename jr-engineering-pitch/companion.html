@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JR Engineering — Deliverables Hub</title>
+  <style>
+    :root { --bg:#0b1220; --panel:#121a2b; --accent:#3b9eff; --text:#e8eef8; --muted:#8fa3bf; --border:#243049; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .sub { color: var(--muted); margin-bottom: 2rem; }
+    section { margin-bottom: 2rem; }
+    h2 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .card p { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
+    a.btn {
+      background: var(--accent); color: #041018; text-decoration: none;
+      padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; white-space: nowrap;
+    }
+    a.btn.outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step; padding: 0.75rem 0 0.75rem 2.5rem; position: relative;
+      border-bottom: 1px solid var(--border); color: var(--muted);
+    }
+    .steps li::before {
+      content: counter(step); position: absolute; left: 0; top: 0.7rem;
+      width: 1.6rem; height: 1.6rem; background: var(--panel); border: 1px solid var(--accent);
+      border-radius: 50%; text-align: center; line-height: 1.5rem; font-size: 0.8rem; color: var(--accent);
+    }
+    .steps strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <h1>📁 Deliverables Hub</h1>
+  <p class="sub">JR Engineering × Ansom Outdoor LLC — everything Daniel can click, test, and download</p>
+
+  <section>
+    <h2>Presentations</h2>
+    <div class="card">
+      <div>
+        <strong>Pitch Deck for Daniel</strong>
+        <p>9 slides · budget tiers · order of operations · keyboard ← → to navigate</p>
+      </div>
+      <a class="btn" href="index.html">Open deck</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Live demos (shareable URLs)</h2>
+    <div class="card">
+      <div>
+        <strong>Levee Breach Wargame</strong>
+        <p>3D Babylon.js scenario · glTF assets from Babylon CDN + Three.js + Khronos · timeline · CSV export</p>
+      </div>
+      <a class="btn" href="wargame-demo/index.html">Launch demo</a>
+    </div>
+    <div class="card">
+      <div>
+        <strong>Asset Bridge Browser</strong>
+        <p>Unified manifest — share 3D assets across Babylon.js, Three.js, and your other app repos</p>
+      </div>
+      <a class="btn outline" href="asset-browser.html">Browse assets</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Engineering nerd files (Excel-ready)</h2>
+    <div class="card">
+      <div>
+        <strong>Scenario Matrix</strong>
+        <p>5 breach variants · probability · damage bands · resource estimates</p>
+      </div>
+      <a class="btn outline" href="deliverables/scenario-levee-breach-matrix.csv" download>Download CSV</a>
+    </div>
+    <div class="card">
+      <div>
+        <strong>Civil Takeoff Template</strong>
+        <p>Line-item quantities · unit costs · contingency · $200K scope example</p>
+      </div>
+      <a class="btn outline" href="deliverables/civil-takeoff-template.csv" download>Download CSV</a>
+    </div>
+    <div class="card">
+      <div>
+        <strong>AI Budget Tracker</strong>
+        <p>Tier 1/2/3 monthly line items · seat counts · opens in Excel for finance review</p>
+      </div>
+      <a class="btn outline" href="deliverables/ai-budget-tracker.csv" download>Download CSV</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to record the pitch video (&lt;3 min)</h2>
+    <ol class="steps">
+      <li><strong>Open wargame demo</strong> in full screen. Start screen recorder (Loom, OBS, or Win+G).</li>
+      <li><strong>Narrate setup (20 sec):</strong> "North levee L-14, river at 12.4 ft, three response units staged."</li>
+      <li><strong>Press Play Scenario</strong> — let it run OR scrub timeline to T+52 for breach moment.</li>
+      <li><strong>Hit Trigger Breach</strong> if you want drama; show inundation stats climbing.</li>
+      <li><strong>Click Export CSV</strong> — "This is the deliverable our clients get in Excel."</li>
+      <li><strong>End (15 sec):</strong> flash companion hub URL. "Tier 1 is $160/month. Links in the deck."</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Deploy & share (5 minutes)</h2>
+    <ol class="steps">
+      <li>Push <code>jr-engineering-pitch/</code> folder to GitHub.</li>
+      <li>Connect repo to <strong>Vercel</strong> or <strong>Netlify</strong> — set root to <code>jr-engineering-pitch</code>.</li>
+      <li>Get URL like <code>jr-pitch.vercel.app</code> — send Daniel the deck link.</li>
+      <li>Optional: custom domain <code>pitch.jrengineering.com</code> via Cloudflare DNS.</li>
+    </ol>
+  </section>
+
+  <p style="margin-top:2rem;color:var(--muted);font-size:0.85rem">
+    Full setup guide: <a href="SETUP-GUIDE.md" style="color:var(--accent)">SETUP-GUIDE.md</a>
+  </p>
+</body>
+</html>

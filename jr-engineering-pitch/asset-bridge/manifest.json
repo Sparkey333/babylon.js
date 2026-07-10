@@ -1,0 +1,151 @@
+{
+  "version": "1.0.0",
+  "description": "Unified asset catalog — Babylon.js, Three.js, Khronos glTF, playground, and your other repos share the same IDs",
+  "sources": {
+    "babylon-cdn": {
+      "base": "https://assets.babylonjs.com",
+      "engine": "babylon",
+      "notes": "Official Babylon.js asset CDN — production default"
+    },
+    "threejs-examples": {
+      "base": "https://threejs.org/examples/models/gltf",
+      "engine": "both",
+      "notes": "Three.js example models — glTF loads in Babylon too"
+    },
+    "khronos-samples": {
+      "base": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0",
+      "engine": "both",
+      "notes": "Khronos glTF sample models — universal format bridge"
+    },
+    "babylon-playground": {
+      "base": "../../packages/tools/playground/public/scenes",
+      "baseDeployed": null,
+      "engine": "babylon",
+      "notes": "Local monorepo only — relative to jr-engineering-pitch/ when running from repo root"
+    },
+    "babylon-assets-github": {
+      "base": "https://raw.githubusercontent.com/BabylonJS/Assets/master",
+      "engine": "babylon",
+      "notes": "BabylonJS/Assets repo — successor to archived playground scenes folder"
+    },
+    "jr-wargame-app": {
+      "base": null,
+      "engine": "both",
+      "notes": "SET YOUR URL — e.g. https://wargame.ansomoutdoor.com/assets or GitHub raw"
+    },
+    "jr-wallet-app": {
+      "base": null,
+      "engine": "both",
+      "notes": "SET YOUR URL — shared icons, UI glbs, scenario thumbnails"
+    },
+    "jr-civil-portfolio": {
+      "base": null,
+      "engine": "both",
+      "notes": "SET YOUR URL — Ansom Outdoor civil project assets"
+    }
+  },
+  "assets": [
+    {
+      "id": "response-truck",
+      "name": "Response Truck (Cesium Milk Truck)",
+      "tags": ["vehicle", "response", "civil", "wargame"],
+      "format": "glb",
+      "source": "khronos-samples",
+      "path": "CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb",
+      "threejsPath": "https://threejs.org/examples/models/gltf/CesiumMilkTruck/glTF/CesiumMilkTruck.gltf",
+      "defaultScale": 1.8,
+      "defaultRotation": [0, 90, 0],
+      "role": "response-unit"
+    },
+    {
+      "id": "response-crew",
+      "name": "Response Crew (Soldier)",
+      "tags": ["character", "response", "wargame"],
+      "format": "glb",
+      "source": "threejs-examples",
+      "path": "Soldier.glb",
+      "defaultScale": 1.2,
+      "defaultRotation": [0, 180, 0],
+      "role": "response-unit",
+      "animations": true
+    },
+    {
+      "id": "survey-drone",
+      "name": "Survey UAV",
+      "tags": ["aircraft", "survey", "civil"],
+      "format": "glb",
+      "source": "babylon-cdn",
+      "path": "meshes/ufo.glb",
+      "defaultScale": 0.4,
+      "defaultRotation": [0, 0, 0],
+      "role": "survey"
+    },
+    {
+      "id": "playground-buggy",
+      "name": "Buggy (Babylon Playground)",
+      "tags": ["vehicle", "demo", "babylon"],
+      "format": "gltf",
+      "source": "babylon-playground",
+      "path": "Buggy/glTF/Buggy.gltf",
+      "fallbackSource": "babylon-cdn",
+      "fallbackPath": "meshes/ufo.glb",
+      "defaultScale": 0.06,
+      "defaultRotation": [0, 0, 0],
+      "role": "response-unit",
+      "notes": "Uses local playground path in monorepo; falls back to CDN ufo when deployed"
+    },
+    {
+      "id": "env-specular",
+      "name": "Studio Environment (IBL)",
+      "tags": ["environment", "lighting"],
+      "format": "env",
+      "source": "babylon-cdn",
+      "path": "environments/environmentSpecular.env",
+      "role": "environment"
+    },
+    {
+      "id": "test-boombox",
+      "name": "Boombox (loader test)",
+      "tags": ["test", "pbr"],
+      "format": "glb",
+      "source": "babylon-cdn",
+      "path": "meshes/boombox.glb",
+      "defaultScale": 15,
+      "role": "prop"
+    },
+    {
+      "id": "custom-levee-marker",
+      "name": "Levee Marker (your repo)",
+      "tags": ["civil", "custom", "placeholder"],
+      "format": "glb",
+      "source": "jr-wargame-app",
+      "path": "markers/levee-L14.glb",
+      "defaultScale": 1,
+      "role": "marker",
+      "placeholder": true,
+      "notes": "Wire jr-wargame-app base URL in manifest sources to activate"
+    },
+    {
+      "id": "custom-wallet-icon",
+      "name": "Wallet App 3D Icon",
+      "tags": ["wallet", "custom", "placeholder"],
+      "format": "glb",
+      "source": "jr-wallet-app",
+      "path": "icons/wallet-3d.glb",
+      "defaultScale": 1,
+      "role": "ui",
+      "placeholder": true
+    }
+  ],
+  "scenarios": {
+    "levee-breach-L14": {
+      "name": "North Levee Breach L-14",
+      "assets": [
+        { "id": "response-truck", "instances": [{ "position": [14, 0, -14], "label": "Sandbag-1" }, { "position": [20, 0, 6], "label": "Pump-2" }] },
+        { "id": "response-crew", "instances": [{ "position": [10, 0, 16], "label": "Crew-A" }] },
+        { "id": "survey-drone", "instances": [{ "position": [-5, 12, 0], "label": "UAV-Survey" }] },
+        { "id": "env-specular", "instances": [{}] }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+Scenario ID,Scenario Name,Probability (%),River Stage (ft),Breach Location,Time to Peak (min),Peak Inundation (acres),Est Damage Low (USD),Est Damage High (USD),Sandbags (CY),Pump Hours,Evac Priority,Notes
+LEVEE-L14-A,North Levee Breach L-14,35,12.4,L-14 @ Sta 14+200,68,142,2800000,4200000,57,170,1,Primary pitch scenario — matches live demo
+LEVEE-L14-B,Controlled Overtopping,25,13.1,Crest L-14,95,89,1200000,2100000,34,98,2,No structural failure; sheet flow
+LEVEE-L14-C,Pipe Failure (seepage),15,11.8,Toe drain T-7,120,41,680000,1100000,22,52,3,Slow onset; inspection catch window
+LEVEE-L14-D,100-yr Storm No Breach,20,14.2,N/A,0,0,150000,400000,0,24,4,Freeboard holds; minor ponding only
+LEVEE-L14-E,Compound (breach + rain),5,13.8,L-14 + upland,45,198,4500000,6200000,79,240,1,Worst case — Godmode tier analysis

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asset Bridge Browser — JR Engineering</title>
+  <style>
+    :root { --bg:#0b1220; --panel:#121a2b; --accent:#3b9eff; --text:#e8eef8; --muted:#8fa3bf; --border:#243049; --ok:#00d4aa; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; max-width: 960px; margin: 0 auto; }
+    h1 { font-size: 1.6rem; margin-bottom: 0.35rem; }
+    .sub { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .sources { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .tag { background: #1a2840; border: 1px solid var(--border); padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.75rem; color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.5rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #1a2840; color: var(--accent); }
+    .ok { color: var(--ok); }
+    .warn { color: #ffb020; }
+    code { background: #1a2840; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.8rem; }
+    a { color: var(--accent); }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+    .card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+    pre { background: #0a0f18; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; overflow-x: auto; font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>🔗 Asset Bridge Browser</h1>
+  <p class="sub">One manifest · Babylon.js + Three.js + your repos · glTF is the universal format</p>
+
+  <div class="sources" id="sourceTags"></div>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Source</th><th>Engine</th><th>URL</th><th>Status</th></tr>
+    </thead>
+    <tbody id="assetTable"></tbody>
+  </table>
+
+  <div class="card">
+    <h3>Wire your other repos</h3>
+    <pre>bridge.registerSource('jr-wargame-app', 'https://raw.githubusercontent.com/YOU/wargame/main/public/assets');
+bridge.registerSource('jr-wallet-app',   'https://wallet.ansomoutdoor.com/assets');
+bridge.registerSource('jr-civil-portfolio', 'https://cdn.ansomoutdoor.com/models');</pre>
+  </div>
+
+  <p><a href="companion.html">← Back to Deliverables Hub</a> · <a href="asset-bridge/README.md">Full docs</a> · <a href="wargame-demo/index.html">Live wargame</a></p>
+
+  <script src="asset-bridge/asset-bridge.js"></script>
+  <script>
+    (async () => {
+    const manifest = await fetch('asset-bridge/manifest.json').then(r => r.json());
+    const bridge = new AssetBridge(manifest);
+
+    document.getElementById('sourceTags').innerHTML = Object.entries(manifest.sources)
+      .map(([id, s]) => `<span class="tag">${id} (${s.engine})</span>`).join('');
+
+    const tbody = document.getElementById('assetTable');
+    for (const asset of manifest.assets) {
+      const src = manifest.sources[asset.source];
+      const url = bridge.resolveUrl(asset.id);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><code>${asset.id}</code></td>
+        <td>${asset.name}${asset.placeholder ? ' <span class="warn">(placeholder)</span>' : ''}</td>
+        <td>${asset.source}</td>
+        <td>${src?.engine ?? '—'}</td>
+        <td style="word-break:break-all;font-size:0.75rem">${url ? `<a href="${url}" target="_blank">${url.slice(0, 60)}…</a>` : '<span class="warn">set source base URL</span>'}</td>
+        <td class="${url ? 'ok' : 'warn'}">${url ? '✓ resolvable' : 'needs repo URL'}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+    })();
+  </script>
+</body>
+</html>

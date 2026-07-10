@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Levee Breach Wargame — JR Engineering Scenario Demo</title>
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="../asset-bridge/asset-bridge.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0f18; font-family: system-ui, sans-serif; }
+    #renderCanvas { width: 100%; height: 100%; touch-action: none; display: block; }
+    .hud {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(180deg, rgba(8,12,20,0.92), transparent);
+      pointer-events: none; z-index: 10;
+    }
+    .hud h1 { font-size: 1.1rem; color: #e8eef8; }
+    .hud p { font-size: 0.8rem; color: #8fa3bf; margin-top: 0.2rem; }
+    .loader-overlay {
+      position: fixed; inset: 0; background: #0a0f18; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+    }
+    .loader-overlay.hidden { display: none; }
+    .loader-bar { width: 240px; height: 4px; background: #1a2840; border-radius: 2px; overflow: hidden; }
+    .loader-fill { height: 100%; background: #3b9eff; width: 0%; transition: width 0.2s; }
+    .loader-text { color: #8fa3bf; font-size: 0.85rem; }
+    .panel {
+      position: fixed; bottom: 1rem; left: 1rem; right: 1rem;
+      max-width: 520px; margin: 0 auto;
+      background: rgba(14, 22, 36, 0.94);
+      border: 1px solid #2a3d5c;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+    .panel h2 { font-size: 0.95rem; color: #3b9eff; margin-bottom: 0.5rem; }
+    .timeline { width: 100%; margin: 0.5rem 0; accent-color: #3b9eff; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 0.75rem 0; }
+    .stat { background: #121a2b; border-radius: 8px; padding: 0.5rem; text-align: center; }
+    .stat strong { display: block; font-size: 1.1rem; color: #00d4aa; }
+    .stat span { font-size: 0.7rem; color: #8fa3bf; }
+    .btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    button {
+      flex: 1; min-width: 90px;
+      background: #3b9eff; color: #041018;
+      border: none; border-radius: 8px;
+      padding: 0.55rem 0.75rem; font-weight: 600; cursor: pointer; font-size: 0.85rem;
+    }
+    button.secondary { background: transparent; color: #e8eef8; border: 1px solid #2a3d5c; }
+    button.danger { background: #ff5c5c; }
+    .event-log {
+      margin-top: 0.6rem; max-height: 72px; overflow-y: auto;
+      font-size: 0.75rem; color: #8fa3bf; line-height: 1.45;
+    }
+    .event-log .alert { color: #ffb020; }
+    .event-log .critical { color: #ff5c5c; }
+    .legend {
+      position: fixed; top: 4.5rem; right: 1rem;
+      background: rgba(14,22,36,0.9); border: 1px solid #2a3d5c;
+      border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.72rem; color: #8fa3bf;
+      z-index: 10; max-width: 180px;
+    }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+    .asset-badge {
+      position: fixed; top: 4.5rem; left: 1rem;
+      background: rgba(14,22,36,0.9); border: 1px solid #2a3d5c;
+      border-radius: 10px; padding: 0.5rem 0.75rem; font-size: 0.68rem; color: #8fa3bf;
+      z-index: 10; max-width: 220px;
+    }
+    .asset-badge strong { color: #00d4aa; display: block; margin-bottom: 0.25rem; font-size: 0.72rem; }
+  </style>
+</head>
+<body>
+  <div class="loader-overlay" id="loader">
+    <div class="loader-text" id="loaderText">Loading assets via Asset Bridge…</div>
+    <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+  </div>
+
+  <canvas id="renderCanvas"></canvas>
+
+  <div class="hud">
+    <h1>⚠ SCENARIO: North Levee Breach — T+0 to T+120 min</h1>
+    <p>JR Engineering · Assets: Babylon CDN + Three.js + Khronos glTF · <a href="../asset-bridge/README.md" style="color:#3b9eff">Asset Bridge</a></p>
+  </div>
+
+  <div class="asset-badge" id="assetBadge">
+    <strong>Asset Bridge</strong>
+    <span id="assetList">Initializing…</span>
+  </div>
+
+  <div class="legend">
+    <div><i style="background:#4a7c59"></i> Dry land</div>
+    <div><i style="background:#2a6cb8"></i> Inundation zone</div>
+    <div><i style="background:#c44"></i> Breach / critical</div>
+    <div><i style="background:#ffb020"></i> glTF response units</div>
+  </div>
+
+  <div class="panel">
+    <h2 id="phaseLabel">PHASE: Loading scenario assets…</h2>
+    <input type="range" class="timeline" id="timeline" min="0" max="120" value="0" />
+    <div class="stats">
+      <div class="stat"><strong id="waterLevel">0.0</strong><span>ft depth @ breach</span></div>
+      <div class="stat"><strong id="acreage">0</strong><span>acres inundated</span></div>
+      <div class="stat"><strong id="cost">$0</strong><span>est. damage band</span></div>
+    </div>
+    <div class="btns">
+      <button id="playBtn" disabled>▶ Play Scenario</button>
+      <button class="secondary" id="pauseBtn">⏸ Pause</button>
+      <button class="danger" id="breachBtn" disabled>💥 Trigger Breach</button>
+      <button class="secondary" id="exportBtn">📊 Export CSV</button>
+    </div>
+    <div class="event-log" id="eventLog">
+      <div>T+0 — Scenario loaded. Levee segment L-14 nominal. River stage 12.4 ft.</div>
+    </div>
+  </div>
+
+  <script>
+    const loaderEl = document.getElementById("loader");
+    const loaderFill = document.getElementById("loaderFill");
+    const loaderText = document.getElementById("loaderText");
+    const assetList = document.getElementById("assetList");
+
+    let loadProgress = 0;
+    function setLoadProgress(p, text) {
+      loadProgress = p;
+      loaderFill.style.width = (p * 100) + "%";
+      if (text) loaderText.textContent = text;
+    }
+
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+    const scene = new BABYLON.Scene(engine);
+    scene.clearColor = new BABYLON.Color4(0.04, 0.06, 0.1, 1);
+
+    const camera = new BABYLON.ArcRotateCamera("cam", -Math.PI / 2.2, 1.1, 85, new BABYLON.Vector3(0, 2, 0), scene);
+    camera.attachControl(canvas, true);
+    camera.lowerRadiusLimit = 40;
+    camera.upperRadiusLimit = 120;
+    camera.wheelPrecision = 20;
+
+    const hemi = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
+    hemi.intensity = 0.7;
+    const sun = new BABYLON.DirectionalLight("sun", new BABYLON.Vector3(-0.5, -1, 0.3), scene);
+    sun.intensity = 0.5;
+
+    // Procedural terrain (fast, no asset dependency)
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 80, height: 60, subdivisions: 32 }, scene);
+    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.28, 0.48, 0.32);
+    ground.material = groundMat;
+
+    const river = BABYLON.MeshBuilder.CreateGround("river", { width: 18, height: 60, subdivisions: 8 }, scene);
+    river.position.x = -22;
+    river.position.y = 0.05;
+    const riverMat = new BABYLON.StandardMaterial("riverMat", scene);
+    riverMat.diffuseColor = new BABYLON.Color3(0.15, 0.4, 0.7);
+    riverMat.alpha = 0.85;
+    river.material = riverMat;
+
+    const levee = BABYLON.MeshBuilder.CreateBox("levee", { width: 4, height: 2.5, depth: 55 }, scene);
+    levee.position = new BABYLON.Vector3(-10, 1.25, 0);
+    const leveeMat = new BABYLON.StandardMaterial("leveeMat", scene);
+    leveeMat.diffuseColor = new BABYLON.Color3(0.45, 0.38, 0.28);
+    levee.material = leveeMat;
+
+    const breach = BABYLON.MeshBuilder.CreateBox("breach", { width: 3, height: 0.3, depth: 3 }, scene);
+    breach.position = new BABYLON.Vector3(-10, 2.6, 8);
+    const breachMat = new BABYLON.StandardMaterial("breachMat", scene);
+    breachMat.diffuseColor = new BABYLON.Color3(0.9, 0.2, 0.2);
+    breachMat.emissiveColor = new BABYLON.Color3(0.4, 0.05, 0.05);
+    breach.material = breachMat;
+    breach.isVisible = false;
+
+    const flood = BABYLON.MeshBuilder.CreateGround("flood", { width: 1, height: 1, subdivisions: 4 }, scene);
+    flood.position.y = 0.12;
+    const floodMat = new BABYLON.StandardMaterial("floodMat", scene);
+    floodMat.diffuseColor = new BABYLON.Color3(0.1, 0.35, 0.75);
+    floodMat.alpha = 0.65;
+    flood.material = floodMat;
+    flood.isVisible = false;
+
+    // Simple buildings (procedural)
+    [[15, -8, 3, 4], [22, 2, 2.5, 3], [10, 12, 4, 5]].forEach(([x, z, w, h]) => {
+      const b = BABYLON.MeshBuilder.CreateBox("bld", { width: w, height: h, depth: w * 0.8 }, scene);
+      b.position = new BABYLON.Vector3(x, h / 2, z);
+      const bm = new BABYLON.StandardMaterial("bldMat", scene);
+      bm.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.58);
+      b.material = bm;
+    });
+
+    const units = [];
+    let bridge;
+    let t = 0, playing = false, breached = false, lastEventT = -999;
+
+    const timeline = document.getElementById("timeline");
+    const waterLevelEl = document.getElementById("waterLevel");
+    const acreageEl = document.getElementById("acreage");
+    const costEl = document.getElementById("cost");
+    const phaseLabel = document.getElementById("phaseLabel");
+    const eventLog = document.getElementById("eventLog");
+
+    function logEvent(msg, cls = "") {
+      const d = document.createElement("div");
+      d.className = cls;
+      d.textContent = `T+${Math.floor(t)} — ${msg}`;
+      eventLog.prepend(d);
+      while (eventLog.children.length > 8) eventLog.removeChild(eventLog.lastChild);
+    }
+
+    function updateScenario(minutes) {
+      t = minutes;
+      timeline.value = Math.floor(t);
+
+      if (!breached) {
+        waterLevelEl.textContent = (12.4 + t * 0.02).toFixed(1);
+        acreageEl.textContent = "0";
+        costEl.textContent = "$0";
+        flood.isVisible = false;
+        breach.isVisible = false;
+        phaseLabel.textContent = t > 30 ? "PHASE: Elevated river — monitoring L-14" : "PHASE: Standby — pre-breach conditions";
+        if (t >= 45 && lastEventT < 45) { logEvent("River stage exceeds warning threshold (13.2 ft).", "alert"); lastEventT = 45; }
+        return;
+      }
+
+      const floodT = Math.max(0, t - 50);
+      const depth = Math.min(8, floodT * 0.12);
+      const acres = Math.min(142, Math.floor(floodT * floodT * 0.08));
+      const costK = Math.min(4200, Math.floor(acres * 28 + depth * 120));
+
+      waterLevelEl.textContent = depth.toFixed(1);
+      acreageEl.textContent = acres;
+      costEl.textContent = "$" + costK + "K";
+
+      flood.isVisible = depth > 0.2;
+      if (flood.isVisible) {
+        const spread = Math.min(35, 4 + floodT * 0.35);
+        flood.scaling.x = spread;
+        flood.scaling.z = spread * 0.7;
+        flood.position.x = -2 + floodT * 0.15;
+        flood.position.z = 8 + floodT * 0.08;
+      }
+
+      breach.isVisible = true;
+      levee.scaling.y = Math.max(0.3, 1 - floodT * 0.008);
+
+      if (t >= 52 && lastEventT < 52) { logEvent("BREACH CONFIRMED at L-14. Initial flow ~420 cfs.", "critical"); lastEventT = 52; }
+      if (t >= 70 && lastEventT < 70) { logEvent("Unit Sandbag-1 deployed to secondary berm.", "alert"); lastEventT = 70; }
+      if (t >= 95 && lastEventT < 95) { logEvent("Inundation reaches Parcel 7. Evac corridor B active.", "critical"); lastEventT = 95; }
+      if (t >= 115 && lastEventT < 115) { logEvent("Peak inundation. 142 ac. Est. damage $4.2M band.", "critical"); lastEventT = 115; }
+
+      phaseLabel.textContent = floodT < 20 ? "PHASE: Active breach — flood propagation" :
+        floodT < 60 ? "PHASE: Inundation expansion — response in progress" : "PHASE: Peak impact — recovery planning";
+    }
+
+    document.getElementById("playBtn").onclick = () => { playing = true; };
+    document.getElementById("pauseBtn").onclick = () => { playing = false; };
+    document.getElementById("breachBtn").onclick = () => {
+      breached = true;
+      if (t < 50) t = 50;
+      logEvent("MANUAL: Breach triggered at L-14.", "critical");
+    };
+    timeline.oninput = () => { playing = false; updateScenario(+timeline.value); };
+
+    document.getElementById("exportBtn").onclick = () => {
+      const rows = [
+        ["Parameter", "Value", "Unit", "Source"],
+        ["Scenario ID", "LEVEE-L14-2026-07", "", "JR Engineering"],
+        ["Asset Bridge Scenario", "levee-breach-L14", "", "manifest.json"],
+        ["Breach time T+", Math.floor(t), "min", "sim"],
+        ["Peak depth @ breach", waterLevelEl.textContent, "ft", "sim"],
+        ["Peak inundation", acreageEl.textContent, "acres", "sim"],
+        ["Damage estimate", costEl.textContent, "USD", "sim"],
+        ["Levee segment", "L-14", "", "field survey"],
+        ["River stage pre-event", "12.4", "ft", "USGS proxy"],
+        ["Response units deployed", units.length, "count", "glTF assets"],
+        ["Sandbag CY estimate", Math.ceil(+acreageEl.textContent * 0.4), "CY", "calc"],
+        ["Pump hours estimate", Math.ceil(+acreageEl.textContent * 1.2), "hr", "calc"],
+      ];
+      const csv = rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `levee-breach-T${Math.floor(t)}-export.csv`;
+      a.click();
+      logEvent("CSV exported — open in Excel.");
+    };
+
+    // ── Asset Bridge: load cross-engine glTF assets ──
+    (async () => {
+      try {
+        setLoadProgress(0.05, "Fetching asset manifest…");
+        bridge = await AssetBridge.create({
+          manifestUrl: new URL("../asset-bridge/manifest.json", window.location.href).href,
+          onLog: (msg) => console.log("[AssetBridge]", msg),
+          onProgress: (id, p) => setLoadProgress(0.1 + p * 0.7, `Loading ${id}…`),
+        });
+
+        // Wire your other repos here (uncomment + set URLs):
+        // bridge.registerSource('jr-wargame-app', 'https://YOUR-WARGAME-REPO/assets');
+        // bridge.registerSource('jr-wallet-app', 'https://YOUR-WALLET-APP/assets');
+
+        setLoadProgress(0.85, "Placing scenario assets…");
+        const { placed } = await bridge.loadScenario(scene, "levee-breach-L14");
+
+        const loadedNames = [];
+        placed.forEach((p) => {
+          if (p.root) {
+            units.push(p.root);
+            loadedNames.push(`${p.label || p.asset.id} (${p.asset.source})`);
+            if (p.animationGroups?.length) p.playAnimation("Run");
+          }
+        });
+
+        assetList.innerHTML = loadedNames.map(n => `• ${n}`).join("<br>") ||
+          "Khronos truck · Three.js soldier · Babylon UAV";
+
+        setLoadProgress(1, "Ready");
+        loaderEl.classList.add("hidden");
+        phaseLabel.textContent = "PHASE: Standby — Press Play Scenario";
+        document.getElementById("playBtn").disabled = false;
+        document.getElementById("breachBtn").disabled = false;
+        logEvent(`Asset Bridge loaded ${placed.length} glTF instances.`, "alert");
+      } catch (err) {
+        console.error(err);
+        loaderText.textContent = "Asset load failed — using procedural fallback.";
+        setTimeout(() => loaderEl.classList.add("hidden"), 1500);
+        phaseLabel.textContent = "PHASE: Standby (fallback mode)";
+        document.getElementById("playBtn").disabled = false;
+        document.getElementById("breachBtn").disabled = false;
+      }
+    })();
+
+    let last = performance.now();
+    scene.registerBeforeRender(() => {
+      const now = performance.now();
+      const dt = (now - last) / 1000;
+      last = now;
+      if (playing) {
+        t += dt * 8;
+        if (t >= 120) { t = 120; playing = false; }
+        updateScenario(t);
+      }
+      units.forEach((u, i) => {
+        if (u.position) u.position.y = (u.position.y || 0) + Math.sin(now / 400 + i) * 0.002;
+      });
+    });
+
+    engine.runRenderLoop(() => scene.render());
+    window.addEventListener("resize", () => engine.resize());
+    updateScenario(0);
+  </script>
+</body>
+</html>

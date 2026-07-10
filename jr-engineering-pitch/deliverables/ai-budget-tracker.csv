@@ -1,0 +1,20 @@
+Month,Line Item,Tier,Amount (USD),Seats,Owner,Notes
+2026-07,Cursor Business,Simple,40,1,Team Lead,Primary dev seat — kills rate limits
+2026-07,Claude Pro (backup),Simple,20,1,Team Lead,Long-context docs + proposals
+2026-07,Domain (ansom + portfolio),Simple,15,0,Team Lead,Cloudflare or Namecheap
+2026-07,Vercel Pro (optional),Simple,20,0,Team Lead,Password-protected client demos
+2026-07,Loom / recording,Simple,15,0,Team Lead,Pitch videos <3 min
+2026-07,Contingency,Simple,50,0,Team Lead,API overages / one-off tools
+2026-07,TIER 1 SUBTOTAL,Simple,160,,,
+2026-08,Cursor Business (×3),Next Level,120,3,Team,Parallel scenario builds
+2026-08,Claude Team,Next Level,150,5,Team,Shared projects + memory
+2026-08,Vercel Pro,Next Level,20,0,Team,Analytics + env vars
+2026-08,BrowserStack (optional),Next Level,39,0,Team,Mobile demo QA for clients
+2026-08,Part-time dev (10 hr),Next Level,500,0,Contractor,Wallet app + portal
+2026-08,TIER 2 SUBTOTAL,Next Level,829,,,
+2026-09,Cursor + Claude Team (full),Godmode,400,10,Org,No seat contention
+2026-09,GPU cloud (sim renders),Godmode,200,0,Team,A10/L4 for video batch
+2026-09,GIS data subscriptions,Godmode,150,0,Team,DEM / imagery
+2026-09,Part-time dev (40 hr),Godmode,2000,0,Contractor,Multi-tenant platform
+2026-09,Training program materials,Godmode,300,0,Team Lead,Cert + office kits
+2026-09,TIER 3 SUBTOTAL,Godmode,3050,,,
