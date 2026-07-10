@@ -1,0 +1,17 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "jsx": "react-jsx",
+        "paths": {
+            "core/*": ["../../dev/core/src/*"],
+            "gui/*": ["../../dev/gui/src/*"],
+            "materials/*": ["../../dev/materials/src/*"],
+            "post-processes/*": ["../../dev/post-processes/src/*"],
+            "shared-ui-components/*": ["../../dev/sharedUiComponents/src/*"]
+        },
+        "strict": true
+    },
+    "include": ["src/**/*"]
+}
