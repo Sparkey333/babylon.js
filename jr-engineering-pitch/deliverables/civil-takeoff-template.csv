@@ -1,0 +1,12 @@
+Line Item,Description,Quantity,Unit,Unit Cost (USD),Extended (USD),Source,Confidence
+001,Levee armoring repair L-14,420,LF,185,77700,field survey,High
+002,Emergency sandbag berm secondary,57,CY,42,2394,scenario calc,Medium
+003,Trash pump rental 6-in,170,HR,95,16150,ops estimate,Medium
+004,Geotextile separation layer,2100,SF,1.85,3885,bid tab,High
+005,Haul & place fill (onsite),180,CY,28,5040,earthwork calc,High
+006,Vegetation clearing inundation zone,8.2,AC,1200,9840,GIS estimate,Low
+007,Access road repair,0.4,MI,85000,34000,damage recon,Medium
+008,Monitoring staff (72 hr),216,HR,65,14040,labor rate,High
+009,Survey as-built post-event,3,EA,4500,13500,scope,High
+010,Contingency (15%),,,,26123,standard,Medium
+,TOTAL,,,,,200672,,

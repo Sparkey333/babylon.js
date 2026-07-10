@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JR Engineering — AI & Scenario Intelligence Pitch | Daniel</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121a2b;
+      --accent: #3b9eff;
+      --accent2: #00d4aa;
+      --warn: #ffb020;
+      --danger: #ff5c5c;
+      --text: #e8eef8;
+      --muted: #8fa3bf;
+      --border: #243049;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+    .deck { height: 100vh; position: relative; }
+    .slide {
+      display: none;
+      height: 100vh;
+      padding: 3rem 4rem;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    h1 { font-size: 2.8rem; line-height: 1.15; margin-bottom: 1rem; }
+    h2 { font-size: 2rem; margin-bottom: 1.25rem; color: var(--accent); }
+    h3 { font-size: 1.2rem; color: var(--accent2); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    p, li { font-size: 1.15rem; line-height: 1.6; color: var(--muted); }
+    .lead { font-size: 1.35rem; color: var(--text); max-width: 52rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 1.5rem; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+    }
+    .card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .card p { font-size: 0.95rem; }
+    .tier-simple { border-top: 3px solid var(--accent2); }
+    .tier-next { border-top: 3px solid var(--accent); }
+    .tier-god { border-top: 3px solid var(--warn); }
+    .price { font-size: 1.8rem; font-weight: 700; color: var(--text); margin: 0.5rem 0; }
+    ul { margin: 1rem 0 0 1.5rem; }
+    li { margin-bottom: 0.5rem; }
+    .tag {
+      display: inline-block;
+      background: #1a2840;
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-right: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+    .nav {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      background: rgba(18, 26, 43, 0.92);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    .nav button {
+      background: var(--accent);
+      color: #041018;
+      border: none;
+      padding: 0.55rem 1.1rem;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav button.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .nav span { color: var(--muted); font-size: 0.9rem; min-width: 4rem; text-align: center; }
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #1a3a5c, #0d2840);
+      border: 1px solid var(--accent);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .cta-row { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #041018;
+      text-decoration: none;
+      padding: 0.85rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .cta.outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .stat-row { display: flex; gap: 2rem; margin-top: 2rem; }
+    .stat strong { display: block; font-size: 2.2rem; color: var(--accent2); }
+    .stat span { font-size: 0.9rem; color: var(--muted); }
+    .logo-line { position: fixed; top: 1.25rem; left: 2rem; font-size: 0.85rem; color: var(--muted); z-index: 50; }
+    .logo-line strong { color: var(--text); }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.65rem 0.85rem; text-align: left; }
+    th { background: #1a2840; color: var(--accent); }
+    .check { color: var(--accent2); }
+    .dash { color: var(--muted); }
+    @media (max-width: 900px) {
+      .slide { padding: 2rem 1.25rem 5rem; }
+      h1 { font-size: 2rem; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-line"><strong>JR Engineering</strong> × Ansom Outdoor LLC · Prepared for Daniel</div>
+
+  <div class="deck" id="deck">
+    <!-- SLIDE 1: Title -->
+    <section class="slide active" data-slide="0">
+      <div class="hero-badge">Confidential · Team Lead AI Initiative · Jul 2026</div>
+      <h1>Run Real Scenarios.<br>Ship Real Deliverables.<br>Scale Real Teams.</h1>
+      <p class="lead">A phased plan to turn our field expertise + AI tooling into client-facing scenario intelligence — starting with one recorded wargame demo, engineering takeoff files, and office training visits.</p>
+      <div class="stat-row">
+        <div class="stat"><strong>&lt;3 min</strong><span>scenario video in-app</span></div>
+        <div class="stat"><strong>3 tiers</strong><span>Simple → Next → Godmode</span></div>
+        <div class="stat"><strong>Day 1</strong><span>shareable demo links</span></div>
+      </div>
+      <div class="cta-row">
+        <a class="cta" href="wargame-demo/index.html" target="_blank">▶ Live Wargame Demo</a>
+        <a class="cta outline" href="companion.html" target="_blank">📁 Deliverables Hub</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: The Problem -->
+    <section class="slide" data-slide="1">
+      <h3>The ceiling</h3>
+      <h2>We're hitting limits — not capability limits</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Personal bottlenecks</h4>
+          <ul>
+            <li>Single AI accounts (Cursor, Claude, etc.) — rate limits block parallel work</li>
+            <li>Personal spend caps — can't run wargame builds + client sites + training prep simultaneously</li>
+            <li>No shared wallet / budget visibility for the team</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Business bottlenecks</h4>
+          <ul>
+            <li>Scenarios live in heads and spreadsheets — not in shareable, testable apps</li>
+            <li>Pitch materials aren't linked to live demos clients can click</li>
+            <li>Office visits need a repeatable curriculum, not one-off hero demos</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem;color:var(--text)"><strong>Ask:</strong> Budget AI like we budget survey gear — per-seat, per-project, with deliverables attached.</p>
+    </section>
+
+    <!-- SLIDE 3: What we ship first -->
+    <section class="slide" data-slide="2">
+      <h3>Phase 0 — this week</h3>
+      <h2>One scenario, fully packaged</h2>
+      <p class="lead">Levee breach / inundation wargame — the kind of thing civil clients actually care about.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h4>🎬 Video (&lt;3 min)</h4>
+          <p>Screen-record the live demo with narration: setup → run → outcome → Excel export. Host on unlisted link for Daniel + clients.</p>
+        </div>
+        <div class="card">
+          <h4>🎮 Live app</h4>
+          <p>Browser-based 3D scenario (Babylon.js). Shareable URL. No install. Scrub timeline, see flood extent, read engineering notes.</p>
+        </div>
+        <div class="card">
+          <h4>📊 Nerd files</h4>
+          <p>Excel-ready CSVs: takeoff quantities, hydro params, cost bands, scenario matrix. Opens in Excel / Google Sheets.</p>
+        </div>
+      </div>
+      <div class="cta-row">
+        <a class="cta" href="wargame-demo/index.html" target="_blank">Try the demo now</a>
+        <a class="cta outline" href="deliverables/scenario-levee-breach-matrix.csv" download>Download scenario matrix</a>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Two-site strategy -->
+    <section class="slide" data-slide="3">
+      <h3>Portfolio architecture</h3>
+      <h2>Two front doors, one backend</h2>
+      <div class="grid-2">
+        <div class="card tier-simple">
+          <h4>🏗️ Ansom Outdoor LLC (Civil)</h4>
+          <p><strong>ansomoutdoor.com</strong> (or subdomain)</p>
+          <ul>
+            <li>Field services, outdoor civil, client-facing credibility</li>
+            <li>Embedded scenario demos for proposals</li>
+            <li>Office visit landing page + training schedule</li>
+            <li>Case studies with downloadable takeoffs</li>
+          </ul>
+        </div>
+        <div class="card tier-next">
+          <h4>💻 AI / ML Portfolio (Technical)</h4>
+          <p><strong>yourname.dev</strong> or <strong>ai.jrengineering.com</strong></p>
+          <ul>
+            <li>Wargame engine, wallet apps, agent workflows</li>
+            <li>GitHub links, live playgrounds, API docs</li>
+            <li>Hiring / partnership credibility</li>
+            <li>Links back to civil work ("applied AI")</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:1.25rem">Both sites cross-link. Civil clients see demos; tech partners see depth. Same scenario data feeds both.</p>
+    </section>
+
+    <!-- SLIDE 5: Three tiers -->
+    <section class="slide" data-slide="4">
+      <h3>Budget tiers</h3>
+      <h2>Simple → Next Level → Godmode</h2>
+      <div class="grid-3">
+        <div class="card tier-simple">
+          <h4>Tier 1 — Simple</h4>
+          <div class="price">~$150–300/mo</div>
+          <ul>
+            <li>1× Cursor Business seat (team lead)</li>
+            <li>Vercel / Netlify free tier hosting</li>
+            <li>1 recorded scenario + 2 CSV deliverables</li>
+            <li>Ansom landing page (1-pager)</li>
+            <li>2 office visit training sessions</li>
+          </ul>
+          <p style="margin-top:0.75rem"><span class="tag">Prove ROI</span><span class="tag">Shareable links</span></p>
+        </div>
+        <div class="card tier-next">
+          <h4>Tier 2 — Next Level</h4>
+          <div class="price">~$800–1.5k/mo</div>
+          <ul>
+            <li>3–5 AI seats (Cursor + Claude Team)</li>
+            <li>Shared project wallet / cost tracker app</li>
+            <li>5+ scenarios in library</li>
+            <li>Custom domain + analytics</li>
+            <li>Monthly office training cadence</li>
+            <li>Client portal (password scenarios)</li>
+          </ul>
+          <p style="margin-top:0.75rem"><span class="tag">Team velocity</span><span class="tag">Parallel builds</span></p>
+        </div>
+        <div class="card tier-god">
+          <h4>Tier 3 — Godmode</h4>
+          <div class="price">~$3–8k/mo</div>
+          <ul>
+            <li>Unlimited seats + API budgets</li>
+            <li>Full wargame platform (multi-tenant)</li>
+            <li>Auto-generated Excel/PDF deliverables</li>
+            <li>GIS import (DEM, shapefiles)</li>
+            <li>Dedicated GPU for sim / video</li>
+            <li>AI training program + certification</li>
+          </ul>
+          <p style="margin-top:0.75rem"><span class="tag">Product</span><span class="tag">Revenue stream</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Team & training -->
+    <section class="slide" data-slide="5">
+      <h3>People plan</h3>
+      <h2>Train the offices before the tools</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Office visit curriculum (repeatable)</h4>
+          <ol style="margin-left:1.25rem;color:var(--muted)">
+            <li><strong>Hour 1:</strong> "What AI actually does for civil" — live scenario demo, no jargon</li>
+            <li><strong>Hour 2:</strong> Hands-on — run a scenario, export Excel, read the takeoff</li>
+            <li><strong>Hour 3:</strong> Build muscle — prompt patterns for RFI drafts, calc checks, site photos</li>
+            <li><strong>Take-home:</strong> Bookmark links + cheat sheet PDF</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h4>Team roles to fund</h4>
+          <ul>
+            <li><strong>AI Team Lead</strong> (you) — scenarios, training, architecture</li>
+            <li><strong>Scenario Author</strong> — field engineer who knows the math</li>
+            <li><strong>Demo Operator</strong> — runs live wargames in client meetings</li>
+            <li><strong>Part-time Dev</strong> — hosting, integrations, wallet app</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Comparison table -->
+    <section class="slide" data-slide="6">
+      <h3>Capability matrix</h3>
+      <h2>What each tier unlocks</h2>
+      <table>
+        <thead>
+          <tr><th>Capability</th><th>Simple</th><th>Next Level</th><th>Godmode</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Live 3D wargame demo</td><td class="check">✓ 1 scenario</td><td class="check">✓ 5+ library</td><td class="check">✓ unlimited + GIS</td></tr>
+          <tr><td>Excel / CSV deliverables</td><td class="check">✓ manual export</td><td class="check">✓ templated</td><td class="check">✓ auto-generated</td></tr>
+          <tr><td>Recorded pitch video</td><td class="check">✓</td><td class="check">✓ per scenario</td><td class="check">✓ auto-narrated</td></tr>
+          <tr><td>AI dev seats</td><td>1</td><td>3–5</td><td>team + API</td></tr>
+          <tr><td>Shared budget wallet</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓ multi-project</td></tr>
+          <tr><td>Client password portal</td><td class="dash">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+          <tr><td>Office training visits</td><td>2/quarter</td><td>monthly</td><td>weekly + cert</td></tr>
+          <tr><td>Revenue potential</td><td>credibility</td><td>proposal upsell</td><td>licensed product</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SLIDE 8: Order of operations -->
+    <section class="slide" data-slide="7">
+      <h3>Order of operations</h3>
+      <h2>Do this in sequence — don't skip steps</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Week 1–2: Prove</h4>
+          <ol style="margin-left:1.25rem;color:var(--muted)">
+            <li>Record wargame video (&lt;3 min) from live demo</li>
+            <li>Package CSV deliverables + companion HTML hub</li>
+            <li>Present this deck to Daniel</li>
+            <li>Get Tier 1 budget approval</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h4>Week 3–4: Publish</h4>
+          <ol style="margin-left:1.25rem;color:var(--muted)">
+            <li>Deploy Ansom civil landing page</li>
+            <li>Deploy AI portfolio site (cross-linked)</li>
+            <li>First office visit — bring laptop + demo URL</li>
+            <li>Collect feedback → scenario #2 backlog</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h4>Month 2: Scale</h4>
+          <ol style="margin-left:1.25rem;color:var(--muted)">
+            <li>Add 2–3 AI seats (kill rate-limit pain)</li>
+            <li>Launch shared wallet / cost tracker</li>
+            <li>3 scenarios in library</li>
+            <li>Pitch Tier 2 with client win story</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h4>Quarter 2: Productize</h4>
+          <ol style="margin-left:1.25rem;color:var(--muted)">
+            <li>Client portal with password scenarios</li>
+            <li>GIS import pipeline</li>
+            <li>Godmode budget case — licensed scenario packs</li>
+            <li>Hire part-time dev or intern</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: The ask -->
+    <section class="slide" data-slide="8">
+      <h3>The ask</h3>
+      <h2>Approve Tier 1 today.<br>Review Tier 2 in 30 days.</h2>
+      <p class="lead">$150–300/month gets us a shareable wargame demo, engineering deliverables, two office trainings, and a civil landing page — all testable by you this week via the links below.</p>
+      <div class="grid-2" style="margin-top:1.5rem">
+        <div class="card">
+          <h4>Tier 1 line items</h4>
+          <ul>
+            <li>Cursor Business: ~$40/seat/mo</li>
+            <li>Claude Pro (backup): ~$20/mo</li>
+            <li>Domain + hosting: ~$20/mo</li>
+            <li>Screen recording / Loom: ~$15/mo</li>
+            <li>Contingency: ~$50/mo</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Success metrics (30 days)</h4>
+          <ul>
+            <li>Daniel has clicked demo + downloaded CSV</li>
+            <li>1 office visit completed with feedback form</li>
+            <li>1 client proposal includes scenario link</li>
+            <li>Team lead not blocked by rate limits</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cta-row">
+        <a class="cta" href="wargame-demo/index.html" target="_blank">▶ Test the wargame now</a>
+        <a class="cta outline" href="companion.html" target="_blank">📁 All deliverables</a>
+        <a class="cta outline" href="SETUP-GUIDE.md" target="_blank">📋 Full setup guide</a>
+      </div>
+    </section>
+  </div>
+
+  <nav class="nav" aria-label="Slide navigation">
+    <button class="secondary" id="prev" type="button">← Prev</button>
+    <span id="counter">1 / 9</span>
+    <button id="next" type="button">Next →</button>
+  </nav>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    let current = 0;
+    const counter = document.getElementById('counter');
+    function show(i) {
+      current = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+      counter.textContent = `${current + 1} / ${slides.length}`;
+    }
+    document.getElementById('prev').onclick = () => show(current - 1);
+    document.getElementById('next').onclick = () => show(current + 1);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+      if (e.key === 'ArrowLeft') show(current - 1);
+    });
+  </script>
+</body>
+</html>
