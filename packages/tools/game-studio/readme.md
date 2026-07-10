@@ -1,69 +1,60 @@
-# Babylon Game Studio
+# Babylon Game Studio v2
 
-Commercial game development hub built on Babylon.js — evolved from the `create-babylonjs` starter into a **playable vertical slice** plus a **project management command center** designed to carry a title from prototype → Kickstarter → first revenue.
+Full commercial game development hub — **3 playable prototypes**, asset library, AI/BYOK agents, idea lab, activity logs, and PM command center.
 
 ## Quick Start
 
 ```bash
 cd packages/tools/game-studio
-npm install
+npm install --ignore-scripts
 npm run dev
 ```
 
 Open **http://localhost:1342**
 
+## Studio Tabs
+
 | Tab | Purpose |
-| --- | ------- |
-| **Play Slice** | Play *Neon Pulse Arena* — arcade aerial score-attack prototype |
-| **Command Center** | Kanban roadmap, revenue milestones, Kickstarter readiness, autopilot |
-| **Game Concepts** | Top 3 commercial game pitches ranked for crowdfunding viability |
+|-----|---------|
+| **Games** | All 3 prototypes in layered order (switch via cards) |
+| **Command** | Kanban roadmap, Kickstarter readiness, revenue milestones, autopilot |
+| **Concepts** | Top 3 ranked commercial pitches |
+| **Assets** | Track Babylon CDN + local + generated assets per game |
+| **AI Hub** | BYOK (OpenAI, Anthropic), Ollama local, agents, subscription burn |
+| **Idea Lab** | Prompt → game concept (AI or heuristic fallback) |
+| **Logs** | Full activity stream — games, assets, AI runs, promotions |
 
-## What's Included
+## 3-Game Stack (Layer Order)
 
-### Playable Vertical Slice — Neon Pulse Arena
+### Layer 1 — Neon Pulse Arena *(live)*
+Arcade aerial score-attack. **WASD** to fly, collect orbs, dodge blocks.
+- Fastest path to trailer + itch.io demo + first dollars
 
-- Third-person follow camera on the **acrobatic plane** glTF from `assets.babylonjs.com`
-- PBR environment lighting (`environmentSpecular.env`)
-- Glow layer + particle orbs + procedural obstacle spawning
-- Score, combo, high-score persistence
-- Ready for gameplay trailer capture
+### Layer 2 — Orbital Forge *(prototype)*
+Zero-G factory on orbital ring. **Click** pad to place modules, watch production tick.
+- Highest Kickstarter ceiling ($180K target)
 
-**Controls:** WASD / Arrow keys — collect cyan orbs, dodge red blocks.
+### Layer 3 — Echo Realms *(prototype)*
+Co-op dimensional puzzle. **WASD** move, **E** switch player, **Q** shift dimension.
+- Both players on pressure plates to open gate
 
-### Project Management Dashboard
+## AI Setup (BYOK + Ollama)
 
-- **6-phase production roadmap** (Pre-Production → Scale)
-- **Kanban task board** with revenue-impact scoring
-- **Kickstarter readiness meter** (weighted checklist)
-- **Revenue milestone tracker** ($1 → $100 → KS goal → launch week)
-- **Autopilot engine** — auto-unlocks dependent tasks, surfaces next actions
-- **Game concept selector** — switch active pitch target
+1. Go to **AI Hub**
+2. Paste API key for OpenAI or Anthropic (stored in browser localStorage only)
+3. Or enable **Ollama**: `ollama serve` + `ollama pull llama3.2`
+4. Set default provider, run agents or generate ideas in **Idea Lab**
 
-### Evolved `create-babylonjs` CLI
+Without keys, the studio uses a built-in heuristic generator — still produces usable concepts.
 
-The scaffold CLI now offers a **Commercial Game** template alongside the original viewer/scene starter. Generate a new game project:
+## Data Persistence
 
-```bash
-npm create babylonjs
-# Select: Project template → Commercial Game
-```
-
-## Top 3 Recommended Game Products
-
-See the **Game Concepts** tab in the studio, or `src/dashboard/data/gameConcepts.ts`.
-
-| Rank | Title | Why it's godmode |
-| --- | --- | --- |
-| **#1** | **Orbital Forge** | Factory/automation in orbit — proven KS genre, showcases Havok, thin instances, atmosphere addon |
-| **#2** | **Neon Pulse Arena** | Fastest path to shippable demo (this vertical slice), viral score loops, browser-first |
-| **#3** | **Echo Realms** | Co-op puzzle adventure — instant browser multiplayer link sharing is a marketing weapon |
-
-## Path to First Dollars
-
-1. **Week 1–2:** Polish vertical slice → record trailer → itch.io PWYW demo
-2. **Week 3–4:** Steam Coming Soon + Discord + email landing page
-3. **Week 5–8:** Playtest survey → Kickstarter pre-launch page
-4. **Launch:** Premium unlock on Steam/itch + cosmetic DLC pipeline
+All studio data persists in browser localStorage:
+- Asset library
+- API keys (never sent to our servers)
+- Generated ideas
+- Activity logs
+- PM kanban state
 
 ## Production Build
 
@@ -72,18 +63,19 @@ npm run build
 npm run preview
 ```
 
-Deploy `dist/` to Vercel, Netlify, or GitHub Pages for a public demo URL (critical for Kickstarter).
+Deploy `dist/` for public demo URL (Kickstarter / Steam Coming Soon).
 
 ## Architecture
 
 ```
 src/
-├── game/           # Babylon.js game engine + Neon Pulse Arena
-├── dashboard/      # PM command center (Zustand store, autopilot)
-├── components/     # Studio shell / navigation
-└── styles/         # Global design system
+├── game/           # Neon Pulse, Orbital Forge, Echo Realms
+├── studio/         # Unified store, types, AI, logger
+├── panels/         # Assets, AI Hub, Idea Lab, Logs
+├── dashboard/      # PM command center
+└── components/     # Studio shell
 ```
 
 ## License
 
-Apache-2.0 (consistent with Babylon.js monorepo)
+Apache-2.0
