@@ -104,13 +104,40 @@ Open `deliverables/ai-budget-tracker.csv` in Excel for line-item detail.
 
 ---
 
+## Asset Bridge (Babylon.js ↔ Three.js ↔ your repos)
+
+glTF is the universal format. One `manifest.json` feeds every app:
+
+| Source | What it provides |
+|--------|------------------|
+| `babylon-cdn` | assets.babylonjs.com meshes + IBL environments |
+| `threejs-examples` | Soldier.glb and other Three.js sample models |
+| `khronos-samples` | CesiumMilkTruck (response vehicles) |
+| `babylon-playground` | Local monorepo scenes (`packages/tools/playground/public/scenes`) |
+| `jr-wargame-app` | **Your wargame repo** — set base URL |
+| `jr-wallet-app` | **Your wallet repo** — shared icons/models |
+
+```javascript
+bridge.registerSource('jr-wargame-app', 'https://raw.githubusercontent.com/YOU/wargame/main/public/assets');
+await bridge.loadScenario(scene, 'levee-breach-L14');
+```
+
+See `asset-bridge/README.md` and `asset-browser.html` for the full catalog.
+
+---
+
 ## File map (this package)
 
 ```
 jr-engineering-pitch/
 ├── index.html              ← Pitch deck for Daniel (start here)
 ├── companion.html          ← Deliverables hub (send this link)
+├── asset-browser.html      ← Browse all shared 3D assets
 ├── SETUP-GUIDE.md          ← This file
+├── asset-bridge/
+│   ├── manifest.json       ← Asset IDs + scenario packs (share across repos)
+│   ├── asset-bridge.js     ← Babylon loader + Three.js manifest export
+│   └── README.md
 ├── wargame-demo/
 │   └── index.html          ← Live 3D scenario (record video from here)
 └── deliverables/
