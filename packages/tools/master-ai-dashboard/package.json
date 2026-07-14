@@ -2,15 +2,23 @@
     "name": "@tools/master-ai-dashboard",
     "private": true,
     "version": "1.0.0",
+    "description": "Master AI Command Center — 3D cockpit dashboard for local Mac",
     "files": [
-        "dist"
+        "dist",
+        "electron",
+        "public",
+        "electron-builder.yml",
+        "scripts"
     ],
-    "main": "dist/index.js",
+    "main": "electron/main.js",
     "scripts": {
         "build": "vite build",
         "serve": "vite",
         "serve:prod": "vite build && vite preview",
-        "clean": "rimraf dist"
+        "clean": "rimraf dist release",
+        "electron:dev": "electron .",
+        "package:mac": "bash ./scripts/package-mac-dmg.sh",
+        "open:setup": "open http://localhost:1347/setup.html || xdg-open http://localhost:1347/setup.html || true"
     },
     "dependencies": {
         "@dev/core": "1.0.0",

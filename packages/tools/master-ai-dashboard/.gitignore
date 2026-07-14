@@ -1,0 +1,8 @@
+release/
+dist/
+.env
+.env.local
+*.dmg
+*.blockmap
+node_modules/
+.DS_Store

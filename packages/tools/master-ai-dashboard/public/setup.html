@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Master AI Command Center — Setup, Keys &amp; Mac DMG</title>
+        <link rel="shortcut icon" href="https://www.babylonjs.com/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+        <style>
+            :root {
+                --bg: #050510;
+                --panel: rgba(8, 12, 32, 0.95);
+                --cyan: #00e5ff;
+                --magenta: #ff00aa;
+                --text: #c8e8ff;
+                --muted: #5a7a99;
+                --border: rgba(0, 229, 255, 0.3);
+            }
+            * { box-sizing: border-box; }
+            html, body {
+                margin: 0;
+                padding: 0;
+                background:
+                    radial-gradient(ellipse at 20% 0%, rgba(0, 100, 180, 0.25), transparent 50%),
+                    radial-gradient(ellipse at 80% 100%, rgba(180, 0, 120, 0.18), transparent 45%),
+                    var(--bg);
+                color: var(--text);
+                font-family: "Share Tech Mono", monospace;
+                min-height: 100%;
+            }
+            body {
+                padding: 32px 20px 64px;
+            }
+            .wrap {
+                max-width: 860px;
+                margin: 0 auto;
+            }
+            h1 {
+                font-family: Orbitron, sans-serif;
+                font-size: clamp(1.4rem, 4vw, 2rem);
+                letter-spacing: 0.12em;
+                color: var(--cyan);
+                text-shadow: 0 0 24px rgba(0, 229, 255, 0.4);
+                margin: 0 0 8px;
+            }
+            .lede {
+                color: var(--muted);
+                line-height: 1.5;
+                margin-bottom: 28px;
+                max-width: 62ch;
+            }
+            .badge {
+                display: inline-block;
+                border: 1px solid var(--border);
+                color: var(--cyan);
+                font-size: 11px;
+                letter-spacing: 0.14em;
+                padding: 4px 10px;
+                margin-bottom: 16px;
+            }
+            .cta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 36px;
+            }
+            a.btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                text-decoration: none;
+                font-family: Orbitron, sans-serif;
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                padding: 12px 16px;
+                border: 1px solid var(--border);
+                color: var(--cyan);
+                background: rgba(0, 40, 70, 0.5);
+                transition: box-shadow 0.15s, border-color 0.15s;
+            }
+            a.btn:hover {
+                border-color: var(--cyan);
+                box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
+            }
+            a.btn.primary {
+                background: linear-gradient(120deg, rgba(0, 180, 220, 0.35), rgba(180, 0, 140, 0.25));
+                color: #fff;
+                border-color: rgba(255, 0, 170, 0.45);
+            }
+            section {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                padding: 20px 22px;
+                margin-bottom: 16px;
+            }
+            section h2 {
+                font-family: Orbitron, sans-serif;
+                font-size: 14px;
+                letter-spacing: 0.1em;
+                color: var(--text);
+                margin: 0 0 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .mac {
+                font-size: 10px;
+                color: var(--magenta);
+                border: 1px solid rgba(255, 0, 170, 0.4);
+                padding: 2px 8px;
+                letter-spacing: 0.08em;
+            }
+            p { color: var(--muted); line-height: 1.55; margin: 0 0 12px; font-size: 14px; }
+            ol.links, ul.links {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            ol.links li, ul.links li {
+                margin-bottom: 10px;
+                padding-left: 0;
+            }
+            a.link {
+                color: var(--cyan);
+                text-decoration: none;
+                border-bottom: 1px solid rgba(0, 229, 255, 0.35);
+                word-break: break-all;
+            }
+            a.link:hover { color: #fff; border-bottom-color: #fff; }
+            .note { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+            .url { display: block; color: rgba(0, 229, 255, 0.45); font-size: 11px; margin-top: 2px; word-break: break-all; }
+            pre {
+                background: #000;
+                border: 1px solid var(--border);
+                padding: 14px;
+                overflow-x: auto;
+                font-size: 12px;
+                color: #7ec8e3;
+                line-height: 1.45;
+            }
+            code.inline {
+                background: rgba(0,0,0,0.45);
+                padding: 1px 6px;
+                color: var(--cyan);
+            }
+            h3 {
+                font-family: Orbitron, sans-serif;
+                font-size: 12px;
+                letter-spacing: 0.14em;
+                color: var(--magenta);
+                margin: 28px 0 12px;
+            }
+            footer {
+                margin-top: 32px;
+                color: var(--muted);
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="badge">LOCAL MAC · KEYS · DMG</div>
+            <h1>MASTER AI COMMAND CENTER</h1>
+            <p class="lede">
+                Clear setup steps and official URLs for API keys. Target this local Mac for now.
+                After <code class="inline">npm run package:mac</code>, refresh Finder and open the new
+                <strong>.dmg</strong> under <code class="inline">release/</code>.
+            </p>
+
+            <div class="cta-row">
+                <a class="btn primary" href="./">▶ Launch cockpit (index)</a>
+                <a class="btn" href="https://developers.pinterest.com/apps/" target="_blank" rel="noopener">Pinterest Apps Console</a>
+                <a class="btn" href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js LTS</a>
+                <a class="btn" href="https://www.electron.build/configuration/mac" target="_blank" rel="noopener">Electron Mac DMG docs</a>
+            </div>
+
+            <section>
+                <h2>1. Local Mac prerequisites <span class="mac">MAC LOCAL</span></h2>
+                <p>Install Node.js LTS (20.x). Clone or open the repo on this Mac. Skip cloud deploy for now.</p>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="https://nodejs.org/en/download" target="_blank" rel="noopener">Download Node.js LTS</a>
+                        <span class="note">Required runtime</span>
+                        <span class="url">https://nodejs.org/en/download</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://github.com/Sparkey333/babylon.js" target="_blank" rel="noopener">Open repo on GitHub</a>
+                        <span class="note">Source + PR</span>
+                        <span class="url">https://github.com/Sparkey333/babylon.js</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>2. Run the Command Center locally <span class="mac">MAC LOCAL</span></h2>
+                <p>From the repo root:</p>
+                <pre>npm install
+npm run build:dev
+npm run serve -w @tools/master-ai-dashboard
+# open http://localhost:1347</pre>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="http://localhost:1347/" target="_blank" rel="noopener">http://localhost:1347/</a>
+                        <span class="note">Dev cockpit (when serve is running)</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://vite.dev/guide/" target="_blank" rel="noopener">Vite guide</a>
+                        <span class="url">https://vite.dev/guide/</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>3. Create a Pinterest app (get keys)</h2>
+                <p>
+                    Create a Pinterest developer app, then copy <strong>App ID</strong> and <strong>App Secret</strong>.
+                    Add redirect URI <code class="inline">http://localhost:1347/oauth/pinterest/callback</code>.
+                    Store secrets in <code class="inline">.env.local</code> on this Mac — never commit them.
+                </p>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="https://developers.pinterest.com/" target="_blank" rel="noopener">Pinterest Developers home</a>
+                        <span class="url">https://developers.pinterest.com/</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://developers.pinterest.com/docs/getting-started/set-up-app/" target="_blank" rel="noopener">Set up your app (official)</a>
+                        <span class="note">Create App ID + App Secret</span>
+                        <span class="url">https://developers.pinterest.com/docs/getting-started/set-up-app/</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://developers.pinterest.com/apps/" target="_blank" rel="noopener">Apps console (keys)</a>
+                        <span class="note">Copy App ID / Secret here</span>
+                        <span class="url">https://developers.pinterest.com/apps/</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>4. Connect OAuth → boards &amp; pins</h2>
+                <p>
+                    Follow Pinterest Authentication. Use board/pin scopes. Run a tiny local proxy on Mac that holds
+                    App Secret and exchanges the code for a token. Point the Inspiration pane at that proxy.
+                </p>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="https://developers.pinterest.com/docs/getting-started/authentication/" target="_blank" rel="noopener">Authentication docs</a>
+                        <span class="url">https://developers.pinterest.com/docs/getting-started/authentication/</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://developers.pinterest.com/docs/api/v5/" target="_blank" rel="noopener">API v5 reference</a>
+                        <span class="url">https://developers.pinterest.com/docs/api/v5/</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>5. Optional — AI co-pilot keys</h2>
+                <p>For a future AI chat panel, create keys on OpenAI and/or Anthropic. Keep them in Keychain or local <code class="inline">.env</code> on this Mac only.</p>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">OpenAI API keys</a>
+                        <span class="url">https://platform.openai.com/api-keys</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Anthropic API keys</a>
+                        <span class="url">https://console.anthropic.com/settings/keys</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>6. Package &amp; open a fresh Mac DMG <span class="mac">MAC LOCAL</span></h2>
+                <p>
+                    On this Mac, run the package script. When it finishes: <strong>refresh Finder</strong>, then
+                    <strong>open the new .dmg</strong> under <code class="inline">packages/tools/master-ai-dashboard/release/</code>.
+                    Drag <em>Master AI Command Center</em> into Applications, then launch.
+                </p>
+                <pre>cd packages/tools/master-ai-dashboard
+npm run package:mac
+# then: open release/*.dmg
+# or double-click the new DMG in Finder after refresh</pre>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="https://www.electron.build/configuration/mac" target="_blank" rel="noopener">Electron Builder Mac / DMG docs</a>
+                        <span class="url">https://www.electron.build/configuration/mac</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>7. Verify the cockpit</h2>
+                <p>
+                    Drag in the 3D viewport to look around. Open Command Center, Inspiration / Pinterest, Debug Bay,
+                    and Setup &amp; Keys. Selecting a project should fly the camera to that life-zone station.
+                </p>
+                <ul class="links">
+                    <li>
+                        <a class="link" href="https://doc.babylonjs.com/" target="_blank" rel="noopener">Babylon.js docs</a>
+                        <span class="url">https://doc.babylonjs.com/</span>
+                    </li>
+                    <li>
+                        <a class="link" href="https://playground.babylonjs.com/" target="_blank" rel="noopener">Babylon Playground</a>
+                        <span class="url">https://playground.babylonjs.com/</span>
+                    </li>
+                </ul>
+            </section>
+
+            <h3>KEY SITES — ALL URLS</h3>
+            <section>
+                <ul class="links">
+                    <li><a class="link" href="https://developers.pinterest.com/" target="_blank" rel="noopener">Pinterest Developers</a><span class="url">https://developers.pinterest.com/</span></li>
+                    <li><a class="link" href="https://developers.pinterest.com/docs/getting-started/set-up-app/" target="_blank" rel="noopener">Pinterest — Set up app</a><span class="url">https://developers.pinterest.com/docs/getting-started/set-up-app/</span></li>
+                    <li><a class="link" href="https://developers.pinterest.com/docs/getting-started/authentication/" target="_blank" rel="noopener">Pinterest — Authentication</a><span class="url">https://developers.pinterest.com/docs/getting-started/authentication/</span></li>
+                    <li><a class="link" href="https://developers.pinterest.com/apps/" target="_blank" rel="noopener">Pinterest Apps Console</a><span class="url">https://developers.pinterest.com/apps/</span></li>
+                    <li><a class="link" href="https://developers.pinterest.com/docs/api/v5/" target="_blank" rel="noopener">Pinterest API v5</a><span class="url">https://developers.pinterest.com/docs/api/v5/</span></li>
+                    <li><a class="link" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">OpenAI API Keys</a><span class="url">https://platform.openai.com/api-keys</span></li>
+                    <li><a class="link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Anthropic API Keys</a><span class="url">https://console.anthropic.com/settings/keys</span></li>
+                    <li><a class="link" href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js download</a><span class="url">https://nodejs.org/en/download</span></li>
+                    <li><a class="link" href="https://doc.babylonjs.com/" target="_blank" rel="noopener">Babylon.js docs</a><span class="url">https://doc.babylonjs.com/</span></li>
+                    <li><a class="link" href="https://www.electron.build/configuration/mac" target="_blank" rel="noopener">Electron Builder (Mac DMG)</a><span class="url">https://www.electron.build/configuration/mac</span></li>
+                    <li><a class="link" href="https://github.com/Sparkey333/babylon.js" target="_blank" rel="noopener">Repo (Sparkey333)</a><span class="url">https://github.com/Sparkey333/babylon.js</span></li>
+                    <li><a class="link" href="https://cursor.com/agents" target="_blank" rel="noopener">Cursor Agents</a><span class="url">https://cursor.com/agents</span></li>
+                </ul>
+            </section>
+
+            <h3>.ENV TEMPLATE (LOCAL MAC)</h3>
+            <pre># Copy to packages/tools/master-ai-dashboard/.env.local (Mac only — do not commit)
+
+PINTEREST_APP_ID=
+PINTEREST_APP_SECRET=
+PINTEREST_REDIRECT_URI=http://localhost:1347/oauth/pinterest/callback
+
+# Optional AI
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+
+MASTER_AI_DASHBOARD_PORT=1347</pre>
+
+            <footer>
+                Master AI Command Center · setup for this local Mac · refresh Finder after each DMG build and open the newest file.
+            </footer>
+        </div>
+    </body>
+</html>

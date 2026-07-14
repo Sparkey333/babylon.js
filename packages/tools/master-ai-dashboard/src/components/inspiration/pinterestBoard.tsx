@@ -6,9 +6,9 @@ import {
     DEMO_BOARDS,
     loadPinterestState,
     savePinterestState,
-    PINTEREST_OAUTH_DOCS,
     type PinterestPin,
 } from "../../data/pinterest";
+import { KEY_SITES } from "../../data/setupGuide";
 
 const useStyles = makeStyles({
     root: {
@@ -131,15 +131,23 @@ export function PinterestBoard() {
                 <Text className={styles.title}>
                     <PinRegular /> INSPIRATION
                 </Text>
-                <Text className={styles.subtitle}>Pinterest mood boards linked to your cockpit HUD</Text>
+                <Text className={styles.subtitle}>
+                    Pinterest mood boards — get App ID / Secret from the Apps Console, then Setup & Keys.
+                </Text>
                 <div className={styles.connectRow}>
                     {!connection.connected ? (
                         <>
                             <Button appearance="primary" icon={<LinkRegular />} onClick={handleConnect}>
                                 Connect Pinterest
                             </Button>
-                            <Button appearance="subtle" onClick={() => window.open(PINTEREST_OAUTH_DOCS, "_blank")}>
-                                API Setup
+                            <Button appearance="subtle" onClick={() => window.open(KEY_SITES.pinterestAppsConsole, "_blank", "noopener,noreferrer")}>
+                                Apps Console (keys)
+                            </Button>
+                            <Button appearance="subtle" onClick={() => window.open(KEY_SITES.pinterestSetUpApp, "_blank", "noopener,noreferrer")}>
+                                Set up app
+                            </Button>
+                            <Button appearance="subtle" onClick={() => window.open("./setup.html", "_blank", "noopener,noreferrer")}>
+                                Full setup steps
                             </Button>
                         </>
                     ) : (
@@ -181,7 +189,10 @@ export function PinterestBoard() {
                 ))}
             </div>
             <div className={styles.statusBar}>
-                {connection.connected ? "Live sync ready" : "Demo mode"} · {filteredPins.length} pins
+                {connection.connected ? "Live sync ready" : "Demo mode"} · {filteredPins.length} pins ·{" "}
+                <a href={KEY_SITES.pinterestAuth} target="_blank" rel="noopener noreferrer" style={{ color: "#ff00aa" }}>
+                    OAuth docs
+                </a>
                 {refreshing && " · refreshing..."}
             </div>
         </div>

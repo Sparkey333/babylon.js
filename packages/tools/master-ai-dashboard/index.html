@@ -4,6 +4,7 @@
         <title>Master AI Command Center</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta name="description" content="Master AI Command Center — 3D cockpit dashboard. Setup &amp; API keys: open setup.html. Local Mac DMG via npm run package:mac." />
         <link rel="shortcut icon" href="https://www.babylonjs.com/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,10 +21,73 @@
                 background: #050510;
                 font-family: "Share Tech Mono", monospace;
             }
+            .boot-setup {
+                position: fixed;
+                z-index: 9999;
+                bottom: 10px;
+                left: 10px;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                pointer-events: none;
+            }
+            .boot-setup a {
+                pointer-events: auto;
+                font-size: 11px;
+                letter-spacing: 0.08em;
+                text-decoration: none;
+                color: #00e5ff;
+                border: 1px solid rgba(0, 229, 255, 0.35);
+                padding: 6px 10px;
+                background: rgba(5, 5, 16, 0.85);
+                font-family: Orbitron, sans-serif;
+            }
+            .boot-setup a:hover {
+                background: rgba(0, 40, 70, 0.9);
+            }
+            noscript {
+                display: block;
+                padding: 24px;
+                color: #c8e8ff;
+                max-width: 640px;
+            }
+            noscript a {
+                color: #00e5ff;
+            }
         </style>
     </head>
     <body>
+        <noscript>
+            <h1>Master AI Command Center</h1>
+            <p>JavaScript is required for the 3D cockpit. Use the static setup guide for keys and Mac DMG steps:</p>
+            <p><a href="./setup.html">Open setup.html — steps &amp; key site URLs</a></p>
+            <ul>
+                <li><a href="https://developers.pinterest.com/apps/">Pinterest Apps Console (keys)</a></li>
+                <li><a href="https://developers.pinterest.com/docs/getting-started/set-up-app/">Pinterest set up app</a></li>
+                <li><a href="https://platform.openai.com/api-keys">OpenAI API keys</a></li>
+                <li><a href="https://console.anthropic.com/settings/keys">Anthropic API keys</a></li>
+                <li><a href="https://nodejs.org/en/download">Node.js LTS</a></li>
+                <li><a href="https://www.electron.build/configuration/mac">Electron Mac DMG docs</a></li>
+            </ul>
+        </noscript>
+
+        <div class="boot-setup" id="boot-setup">
+            <a href="./setup.html" target="_blank" rel="noopener">Setup · Keys · DMG</a>
+            <a href="https://developers.pinterest.com/apps/" target="_blank" rel="noopener">Pinterest keys</a>
+        </div>
+
         <div id="root"></div>
         <script type="module" src="/src/index.tsx"></script>
+        <script>
+            // Hide bootstrap chips once React/shell mounts (keeps key links available via Setup pane).
+            window.addEventListener("DOMContentLoaded", function () {
+                setTimeout(function () {
+                    var el = document.getElementById("boot-setup");
+                    if (el && document.querySelector("[data-master-ai-shell]")) {
+                        el.style.display = "none";
+                    }
+                }, 2500);
+            });
+        </script>
     </body>
 </html>

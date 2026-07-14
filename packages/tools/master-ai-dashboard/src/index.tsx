@@ -3,6 +3,7 @@ import { CockpitServiceDefinition } from "./services/cockpitService";
 import { CommandCenterServiceDefinition } from "./services/commandCenterService";
 import { InspirationServiceDefinition } from "./services/inspirationService";
 import { DebugConsoleServiceDefinition } from "./services/debugConsoleService";
+import { SetupServiceDefinition } from "./services/setupService";
 
 MakeModularTool({
     namespace: "MasterAIDashboard",
@@ -10,6 +11,7 @@ MakeModularTool({
     serviceDefinitions: [
         CockpitServiceDefinition,
         DebugConsoleServiceDefinition,
+        SetupServiceDefinition,
         CommandCenterServiceDefinition,
         InspirationServiceDefinition,
     ],
@@ -20,3 +22,6 @@ MakeModularTool({
     rightPaneDefaultWidth: 320,
     rightPaneMinWidth: 260,
 });
+
+// Mark shell for optional bootstrap-chip cleanup in index.html
+document.documentElement.setAttribute("data-master-ai-shell", "1");
